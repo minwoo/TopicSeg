@@ -1,0 +1,128 @@
+/*
+ * Copyright (C) 2010 Cluster of Excellence, Univ. of Saarland
+ * Minwoo Jeong (minwoo.j@gmail.com) is a main developer.
+ * This file is part of "TopicSeg" package.
+ * This software is provided under the terms of LGPL.
+ */
+
+package unisaar.topicseg.document;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
+import unisaar.topicseg.document.Document.SegmentBoundary;
+
+/**
+ * unisaar.topicseg.document::Annotation.java
+ *
+ * NOTE: 현재의 구현은 토픽 클러스터링만 다룰수 있다. 즉 arbitrary link 에 대해서 모델할 순 없다.
+ * 확장을 위해서는 (d1_id, d2_id)와 같은 link를 저장하는 벡터를 사용할 것. (단 성능 지표는 link prediction + segmentation 이 되어야 함)  
+ * @author minwoo
+ */
+public class Annotation {
+	
+	protected HashMap<Object, Integer> topicMap;
+	protected ArrayList<Object> topicVec;
+	protected ArrayList<ArrayList<Label>> topicClusters;
+	protected int nDoc;
+	protected int[] nSent;
+	
+	/**
+	 * Construct annotation info (with internal dictionary of docset)
+	 * need to replace external dictionary? (for allowing collection-level topic identification?) 
+	 */
+	public Annotation() {
+		topicMap = new HashMap<Object, Integer>();
+		topicVec = new ArrayList<Object>();
+		topicClusters = new ArrayList<ArrayList<Label>>();
+	}
+	
+	/**
+	 * Add one annotation for segmentation
+	 * @param topicLabel 
+	 * @param docId document id 
+	 * @param segPoint segmentation point (start, end)
+	 */
+	public void add(Object topicLabel, int docId, int[] segPoint) {
+		if (topicMap.containsKey(topicLabel)) {
+			int topicId = topicMap.get(topicLabel);
+			ArrayList<Label> oldLabel = topicClusters.get(topicId);
+			oldLabel.add(new Label(docId, segPoint[0], segPoint[1]));
+		}
+		else {
+			topicMap.put(topicLabel, topicVec.size());
+			topicVec.add(topicLabel);
+			ArrayList<Label> newLabel = new ArrayList<Label>();
+			newLabel.add(new Label(docId, segPoint[0], segPoint[1]));
+			topicClusters.add(newLabel);
+		}
+	}
+
+	public void set(int D, int[] T) {
+		this.nDoc = D;
+		this.nSent = T;
+	}
+	
+	public ArrayList<ArrayList<Label>> getClusters() {
+		return topicClusters;
+	}
+	
+	public int[][] toArray() {
+		int[][] refs = new int[nDoc][];
+		
+		for (int i = 0; i < refs.length; i++) {
+			refs[i] = new int[nSent[i]];
+			Arrays.fill(refs[i], -1);
+		}
+		
+        for (int i = 0; i < topicClusters.size(); i++) {
+            int label = i;
+        	for (Label l : topicClusters.get(i)) {
+        		for (int t = l.start; t <= l.end; t++) {
+        			refs[l.docId][t] = label;
+        		}
+        	}
+        }
+		
+		return refs;
+	}
+	
+	/**
+	 * Return number of topic clusters
+	 * @return size
+	 */
+	public int size() {	return topicClusters.size(); }
+	
+	/**
+	 * Stringize for debugging	
+	 */
+	public String toString() {
+        StringBuffer sb = new StringBuffer();
+        
+        for (int i = 0; i < topicClusters.size(); i++) {
+            sb.append(topicVec.get(i) + " ");
+        	for (Label l : topicClusters.get(i)) {
+        		sb.append(l.docId + "::" + l.start + "-" + l.end + " ");
+        	}
+    		sb.append('\n');
+        }
+        
+        return sb.toString();		
+	}
+	
+	/**
+	 * Class for label info.
+	 */
+	public class Label {
+		public int docId = -1;
+		public int start = -1;
+		public int end = -1;
+		
+		public Label(int docId, int start, int end) {
+			this.docId = docId;
+			this.start = start;
+			this.end = end;
+		}
+	}
+}

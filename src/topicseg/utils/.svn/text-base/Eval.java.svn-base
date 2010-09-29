@@ -1,0 +1,279 @@
+/*
+ * Copyright (C) 2010 Cluster of Excellence, Univ. of Saarland
+ * Minwoo Jeong (minwoo.j@gmail.com) is a main developer.
+ * This file is part of "TopicSeg" package.
+ * This software is provided under the terms of LGPL.
+ */
+
+package unisaar.topicseg.utils;
+
+import java.util.ArrayList;
+
+import unisaar.topicseg.document.Annotation.Label;
+
+/**
+ * unisaar.topicseg.utils::Eval.java
+ *
+ * @author minwoo
+ */
+public class Eval {
+	
+    public static double Pk(int[] ref, int[] hyp, int N) {
+    	int k = ref.length / (2 * N);
+    	double num_misses = 0.0;
+    	for (int i = 0; i < ref.length - k; i++) {
+    		int ref_boundary = numSeg(ref, i, i+k);
+    		int hyp_boundary = numSeg(hyp, i, i+k);
+            if (xor(hyp_boundary != 0, ref_boundary != 0)) num_misses++;
+    	}
+    	return num_misses / (double) (ref.length - k);
+    }
+
+    public static double WinDiff(int[] ref, int[] hyp, int N) {
+    	int k = ref.length / (2 * N);
+    	double num_misses = 0.0;
+    	for (int i = 0; i < ref.length - k; i++) {
+    		int ref_boundary = numSeg(ref, i, i+k);
+    		int hyp_boundary = numSeg(hyp, i, i+k);
+            if (hyp_boundary - ref_boundary != 0) num_misses++;
+    	}
+    	return num_misses / (double) (ref.length - k);
+    }
+    
+    // don't use for the clustering purpose
+    public static double accuracy(int[] ref, int[] hyp) {
+    	assert (hyp.length == ref.length);
+    	double correct = 0;
+    	for (int i = 0; i < hyp.length; i++) {
+    		if (hyp[i] == ref[i])
+    			correct += 1.0;
+    	}
+    	return correct / (double) ref.length;
+    }
+
+    public static double macroF1(int[] hyp, int[] ref, int nClass) {
+    	assert (hyp.length == ref.length);
+    	int[] correct = new int[nClass+1];
+    	int[] truth = new int[nClass+1];
+    	int[] guess = new int[nClass+1];
+    	
+    	for (int i = 0; i < hyp.length; i++) {
+    		if (ref[i] >= nClass || ref[i] < 0) ref[i] = nClass;
+    		if (hyp[i] >= nClass || hyp[i] < 0) hyp[i] = nClass;
+    		int zhat_i = hyp[i], zstar_i = ref[i];
+     		if (hyp[i] >= nClass) zhat_i = nClass;
+     		if (ref[i] >= nClass) zstar_i = nClass;
+    			
+    		guess[zhat_i]++; truth[zstar_i]++;
+    		if (zhat_i == zstar_i) correct[zstar_i]++; 
+    	}
+    	
+    	double f1 = 0.0;
+    	double total = 0.0;
+    	for (int k = 0; k < nClass; k++) {
+    		double prec = (guess[k] > 0) ? (double) correct[k] / guess[k]:0.0;
+    		double rec = (truth[k] > 0) ? (double) correct[k] / truth[k]:0.0;
+    		if (prec + rec > 0)
+    			f1 += 2 * (prec * rec ) / (prec+rec);
+    		total += (double) truth[k];
+    	}
+    	f1 /= (double) nClass;
+    	return f1;
+    }
+
+    public static double microF1(int[] ref, int[] hyp, int nClass) {
+    	assert (ref.length == hyp.length);
+    	int[] correct = new int[nClass+1];
+    	int[] truth = new int[nClass+1];
+    	int[] guess = new int[nClass+1];
+    	
+    	for (int i = 0; i < ref.length; i++) {
+    		if (ref[i] >= nClass || ref[i] < 0) ref[i] = nClass;
+    		if (hyp[i] >= nClass || hyp[i] < 0) hyp[i] = nClass;
+    		int ref_i = ref[i], hyp_i = hyp[i];
+     		if (ref[i] >= nClass) ref_i = nClass;
+     		if (hyp[i] >= nClass) hyp_i = nClass;
+    			
+    		guess[hyp_i]++; truth[ref_i]++;
+    		if (ref_i == hyp_i) correct[ref_i]++; 
+    	}
+    	
+    	double f1 = 0.0;
+    	double total = 0.0;
+    	for (int k = 0; k < nClass; k++) {
+    		double prec = (hyp[k] > 0) ? (double) correct[k] / hyp[k] : 0.0;
+    		double rec = (truth[k] > 0) ? (double) correct[k] / truth[k] : 0.0;
+    		if (prec + rec > 0)
+    			f1 += 2 * (prec * rec ) / (prec+rec) * truth[k];
+    		total += (double) truth[k];
+    	}
+    	f1 /= (double) total;
+    	return f1;
+    }
+    
+    public static double lengthRatio(int[] ref, int[] hyp) {
+    	assert (hyp.length == ref.length);
+    	int n_ref = numSeg(ref, 0, ref.length-1) + 1;
+    	int n_hyp = numSeg(hyp, 0, hyp.length-1) + 1;
+    	
+    	return 1. * n_hyp / n_ref;
+    }
+    
+    
+    public static int numSeg(int[] z, int i, int j) {
+    	int v = 0, prev = Integer.MAX_VALUE;
+    	for (int k = i; k <= j; k++) {
+    		if (z[k] != prev)
+    			v++;
+    		prev = z[k];
+    	}
+    	return v - 1;
+    }
+    
+    public static boolean xor(boolean op1, boolean op2) {
+        if ((op1 && op2) || (!op1 && !op2)) 
+            return false;
+        return true;
+    }
+    
+    public static int[] transform(int[] z, int K) {
+    	int[] v = new int[z.length];
+    	for (int i = 0; i < v.length; i++) { 
+    		if (/*z[i] >= K ||*/ z[i] < 0) v[i] = -1;
+    		else v[i] = z[i];
+    	}
+    	return v;
+    }
+    
+    public static double varInfo(ArrayList<ArrayList<Label>> refs, ArrayList<ArrayList<Label>> hyps, int N) {
+    	double entropy_i = 0.0, entropy_j = 0.0, mutual_info = 0.0;
+    	double vi = 0.0;
+    	
+    	for (ArrayList<Label> ref : refs) { 
+    		double p_i = (double)total(ref) / N;
+    		if (p_i > 0)
+    			entropy_i -= p_i * Math.log(p_i);
+    	}
+    	
+		for (ArrayList<Label> hyp : hyps) { 
+    		double q_j = (double)total(hyp) / N;
+    		if (q_j > 0)
+    			entropy_j -= q_j * Math.log(q_j);
+		}
+    	
+    	for (ArrayList<Label> ref : refs) {
+    		double p_i = (double)total(ref) / N;
+    		for (ArrayList<Label> hyp : hyps) {
+        		double q_j = (double)total(hyp) / N;
+        		double r_ij = (double)intersect(ref, hyp) / N;
+        		if (r_ij > 0) 
+        			mutual_info += r_ij * (Math.log(r_ij) - Math.log(p_i * q_j));
+    		}
+    	}
+    	
+    	vi = entropy_i + entropy_j - 2.0 * mutual_info;
+    	
+    	return 1.0 - vi / Math.log(N);
+    }
+    
+    public static double randIndex(ArrayList<ArrayList<Label>> refs, ArrayList<ArrayList<Label>> hyps, int N) {
+    	double ri = 0;
+    	int N_00_plus_11 = 0, N_01 = 0, N_10 = 0;
+    	
+    	for (ArrayList<Label> ref : refs) {
+    		int max = 0; int max_nHyp = 0;
+    		for (ArrayList<Label> hyp : hyps) {
+    			int v = intersect(ref, hyp);
+    			if (v > max) {
+    				max = v;
+            		max_nHyp = total(hyp);
+    			}
+    		}
+    		
+    		N_01 += max_nHyp; 
+    		N_10 += total(ref);
+    	}
+    	
+		N_00_plus_11 = N > 1 ? N * (N - 1) / 2 - N_01 - N_10 : 0;
+		ri = N_00_plus_11 > 0 ? 2.0 * (N_00_plus_11) / ((double) N * (N-1)) : 0;
+    	return ri;
+    }
+
+    
+    public static double[] fscore(ArrayList<ArrayList<Label>> refs, ArrayList<ArrayList<Label>> hyps) {
+    	double prec = 0.0, rec = 0.0, f1 = 0.0;
+    	int nTotal = 0;
+    	
+    	for (ArrayList<Label> ref : refs) {
+    		int max = 0; int max_nHyp = 0;
+    		for (ArrayList<Label> hyp : hyps) {
+    			int v = intersect(ref, hyp);
+    			if (v > max) {
+    				max = v;
+            		max_nHyp = total(hyp);
+    			}
+    		}
+    		int nRef = total(ref);
+    		prec += max > 0 ? (double)max / max_nHyp : 0.;
+    		rec += max > 0 ? (double)max / nRef : 0.;
+    		nTotal += nRef;
+    	}
+    	prec /= refs.size();
+    	rec /= refs.size();
+    	if (prec * rec > 0)
+    		f1 = 2 * (prec * rec) / (prec + rec);
+    	else
+    		f1 = 0.0;
+    	
+    	return new double[] {prec, rec, f1};
+    }
+    
+    public static int total(ArrayList<Label> labels) {
+    	int v = 0;
+    	for (Label l : labels) 
+    		v += (l.end - l.start + 1);
+    	return v;
+    }
+    
+    public static int intersect(ArrayList<Label> ref, ArrayList<Label> hyp) {
+    	int v = 0;
+    	
+    	for (Label r : ref) {
+    		for (Label h : hyp) {
+    			if (h.docId == r.docId) {
+    				if (r.start > h.end || r.end < h.start)
+    					v += 0;
+    				else if (r.start <= h.start && r.end >= h.end)
+    					v += (h.end - h.start + 1);
+    				else if (r.start >= h.start && r.end <= h.end)
+    					v += (r.end - r.start + 1);
+    				else if (r.start < h.start)
+    					v += (r.end - h.start + 1);
+    				else
+    					v += (h.end - r.start + 1);
+    			}
+    		}
+    	}
+    	
+    	return v;
+    }
+    
+    public static ArrayList<ArrayList<Label>> convertClusterForm(ArrayList<ArrayList<Label>> clusters) {
+    	ArrayList<ArrayList<Label>> ret = new ArrayList<ArrayList<Label>>();
+    	
+    	for (ArrayList<Label> cluster : clusters) {
+    		for (Label c : cluster) {
+    			if (ret.size() > c.docId) {
+    				ArrayList<Label> t = ret.get(c.docId);
+    				t.add(c);
+    			}
+    			else {
+    				ArrayList<Label> t = new ArrayList<Label>();
+    				t.add(c); ret.add(t);
+    			}
+    		}
+    	}
+    	
+    	return ret;
+    }
+}

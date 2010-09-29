@@ -1,0 +1,23 @@
+A bug allowed Facebook users to view their friends' chat sessions on the site, prompting the social-networking company to disable its internal instant-messaging service. The bug also let people see their friends' pending friend requests.
+To exploit the now-patched hole, people had to manipulate "in a specific way" the site's feature that lets members preview how their profile looks to each of their friends, Facebook said Wednesday on its official corporate page on the site.
+The vulnerability existed "for a limited amount of time," the company said. The chat function is now working again.
+Technology news site TechCrunch first reported the bug and posted a video that demonstrates how the bug could be exploited.
+"When we received reports of the problem, our engineers promptly diagnosed it and temporarily disabled the chat function," a Facebook spokeswoman said via e-mail.
+"We worked quickly to resolve this matter, ensuring that once the bug was reported to us, a solution was quickly found and implemented," she added.
+When asked how long the vulnerability existed, she replied: "We don't have specifics on how long the vulnerability existed, but it was for a short period of time."
+John Simpson, an official with Consumer Watchdog, was displeased with the incident. "Once again we see what happens when companies push the technological envelope with little concern for consumers' privacy rights," he said via e-mail.
+The bug reinforces the Electronic Frontier Foundation's blanket recommendation for users on Facebook, said Peter Eckersley, an EFF senior staff technologist.
+"What you don't want the world to know about, don't put it on Facebook," he said in a phone interview.
+"Facebook's security engineering is improving, but it's still not good enough that we'd ever advise people to put private, sensitive information there," Eckersley said.
+The bug comes at a time when privacy concerns regarding Facebook have heated up, after the company recently introduced features that allow third-party Web sites to tap into users' profile data to personalize their experience for them.
+Two weeks ago, Facebook announced it had revamped its application development platform so that its site and external sites can mesh their users' "social graphs" to individually customize their interaction with them.
+"People can have instantly social and personalized experiences everywhere they go," said Mark Zuckerberg, Facebook's CEO.
+Key to this vision is Facebook's Open Graph API (application programming interface) and Open Graph Protocol, a system to mark up objects in a uniform way so that Facebook and participating sites can understand them the same way.
+Facebook also released plug-ins for developers to easily incorporate on their Web pages Facebook functionality, such as the already widespread "Like" button, which lets end-users express interest in content and inform participating Web sites.
+Facebook's site has become a highly complex technology operation serving a massive number of users, which increases the likelihood of breakdowns, so the company must be increasingly vigilant about preventing and fixing bugs and malfunctions, said Augie Ray, a Forrester Research analyst.
+As Facebook grows in size and importance, with hundreds of millions of people using it to store and share very personal information, the stakes are sky-high whenever a bug causes a security or privacy breach, he said in a phone interview.
+Not only can these incidents erode the trust end-users and advertising partners have on Facebook, but they also put the company at risk of civil lawsuits and government penalties, Ray said.
+"Today's incident doesn't seem like an overwhelmingly substantial security breach, but it is serious enough to raise questions on the minds of end-users as to how much they can trust Facebook with their information," he said.
+"Facebook must make sure incidents like this one don't accumulate to the extent they become a bigger legal or trust issue," Ray added.
+Once Facebook concludes its internal investigation of what went wrong and why, it would be in its best interest to provide more information about its findings, because transparency will help repair confidence among users and partners, he said.
+Altimeter Group analyst Jeremiah Owyang predicts incidents like this will happen again. "Don't expect this to be the last privacy mishap. As more users flock to Facebook, it'll continue to innovate and change features in order to grow," he said via e-mail. "Most consumers don't give privacy a hard think until it impacts their lives directly."

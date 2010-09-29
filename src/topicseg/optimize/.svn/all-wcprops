@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/459/it-svn/TopicSeg/src/unisaar/topicseg/optimize
+END
+Mcsrch.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/459/it-svn/TopicSeg/src/unisaar/topicseg/optimize/Mcsrch.java
+END
+LBFGS.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/459/it-svn/TopicSeg/src/unisaar/topicseg/optimize/LBFGS.java
+END
+LBFGSWrapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/459/it-svn/TopicSeg/src/unisaar/topicseg/optimize/LBFGSWrapper.java
+END

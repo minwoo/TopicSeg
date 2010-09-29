@@ -1,0 +1,205 @@
+/*
+ * Copyright (C) 2010 Cluster of Excellence, Univ. of Saarland
+ * Minwoo Jeong (minwoo.j@gmail.com) is a main developer.
+ * This file is part of "TopicSeg" package.
+ * This software is provided under the terms of LGPL.
+ */
+
+package topicseg.document;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.rmi.dgc.VMID;
+import gnu.trove.map.hash.TObjectIntHashMap;
+
+/**
+ * unisaar.topicseg.document::Alphabet
+ * 
+ * @author minwoo
+ */
+public class Alphabet implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	private static final int CURRENT_SERIAL_VERSION = 1;
+	private static final int DEFAULT_CAPACITY = 8;
+	VMID instanceId = new VMID();  
+	
+	protected TObjectIntHashMap map;
+    protected ArrayList list;
+
+    public Alphabet() {
+        this(DEFAULT_CAPACITY);
+    }
+
+	public Alphabet(int capacity) {
+        this.map = new TObjectIntHashMap(capacity);
+        this.list = new ArrayList(capacity);
+    }
+	
+	/**
+	 * Lookup the hash table to find item
+	 * @param entry
+	 * @param isUpdate	boolean variable to insert new item if not contained.
+	 * @return id
+	 */
+	public int lookup(Object entry, boolean isUpdate) {
+        if (entry == null)
+            throw new IllegalArgumentException("Can't find \"null\" entry in Dictionary");
+        
+        int ret = -1;
+        if (map.containsKey(entry)) 
+            ret = map.get(entry);
+        else if (isUpdate) {
+            ret = list.size();
+            map.put(entry, ret);
+            list.add(entry);
+        }
+        
+        return ret;
+    }
+
+	/**
+	 * Lookup the hash table (allowing insertion of new item by default)  
+	 * @param entry
+	 * @return id
+	 */
+    public int lookup(Object entry) {
+        return lookup(entry, true);
+    }
+
+    /**
+     * Lookup the hash table with array of items
+     * @param entries
+     * @param isUpdate
+     * @return ids
+     */
+    public int[] lookup(Object[] entries, boolean isUpdate) {
+        int[] ret = new int[entries.length];
+        
+        for (int i = 0; i < entries.length; i++)
+            ret[i] = lookup(entries[i], isUpdate);
+        
+        return ret;
+    }
+
+    /**
+     * Get object
+     * @param index
+     * @return
+     */
+    public Object getObject(int index) {
+        return list.get(index);
+    }
+
+    /**
+     * Get object vector
+     * @param indices
+     * @return
+     */
+    public Object[] getObject(int[] indices) {
+        Object[] ret = new Object[indices.length];
+        
+        for (int i = 0; i < indices.length; i++)
+            ret[i] = list.get(i);
+        
+        return ret;
+    }
+    
+    /**
+     * Check whether the map contains the item 
+     * @param entry
+     * @return
+     */
+    public boolean contains(Object entry) {
+        return map.containsKey(entry);
+    }
+
+    /**
+     * return size of item vector ( = # of vocabulary)
+     * @return
+     */
+    public int size() {
+        return list.size();
+    }
+
+    /**
+     * Stringize
+     */
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        
+//        for (Object i : list) {
+//            sb.append(i.toString());
+//            sb.append('\n');
+//        }
+        for (int i = 0; i < list.size(); i++) {
+        	sb.append((i+1)+ " " + list.get(i));
+        	sb.append('\n');
+        }
+        
+        return sb.toString();
+    }
+    
+    /**
+     * Return array
+     * @return
+     */
+    public Object[] toArray() {
+        return list.toArray();
+    }
+    
+    /**
+     * Clear
+     */
+    public void clear() {
+    	map.clear();
+    	list.clear();
+    }
+    
+    /**
+     * Serialize alphabet
+     * @param out
+     * @throws IOException
+     */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.writeInt(CURRENT_SERIAL_VERSION);
+		out.writeInt(list.size());
+		for (int i = 0; i < list.size(); i++)
+			out.writeObject(list.get(i));
+		out.writeObject(instanceId);
+	}
+
+	/**
+	 * Deserialize alphabet
+	 * @param in
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		int version = in.readInt();
+		int size = in.readInt();
+		list = new ArrayList(size);
+		map = new TObjectIntHashMap(size);
+		for (int i = 0; i < size; i++) {
+			Object o = in.readObject();
+			map.put(o, i);
+			list.add(o);
+		}
+		if (version > 0 ) 
+			instanceId = (VMID) in.readObject();
+	}
+
+	private transient static HashMap deserializedEntries = new HashMap();
+	
+	public Object readResolve() throws ObjectStreamException {
+		Object previous = deserializedEntries.get(instanceId);
+		
+		if (previous != null)
+			return previous;
+		if (instanceId != null)
+			deserializedEntries.put(instanceId, this);
+		
+		return this;
+	}
+}

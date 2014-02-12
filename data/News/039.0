@@ -1,0 +1,52 @@
+In the 1990s, a researcher named Kris Pister dreamed up a wild future in which people would sprinkle the Earth with countless tiny sensors, no larger than grains of rice.
+These "smart dust" particles, as he called them, would monitor everything, acting like electronic nerve endings for the planet. Fitted with computing power, sensing equipment, wireless radios and long battery life, the smart dust would make observations and relay mountains of real-time data about people, cities and the natural environment.
+Now, a version of Pister's smart dust fantasy is starting to become reality.
+"It's exciting. It's been a long time coming," said Pister, a computing professor at the University of California, Berkeley.
+"I coined the phrase 14 years ago. So smart dust has taken a while, but it's finally here."
+Maybe not exactly how he envisioned it. But there has been progress.
+The latest news comes from the computer and printing company Hewlett-Packard, which recently announced it's working on a project it calls the "Central Nervous System for the Earth." In coming years, the company plans to deploy a trillion sensors all over the planet.
+The wireless devices would check to see if ecosystems are healthy, detect earthquakes more rapidly, predict traffic patterns and monitor energy use. The idea is that accidents could be prevented and energy could be saved if people knew more about the world in real time, instead of when workers check on these issues only occasionally.
+HP will take its first step toward this goal in about two years, said Pete Hartwell, a senior researcher at HP Labs in Palo Alto. The company has made plans with Royal Dutch Shell to install 1 million matchbook-size monitors to aid in oil exploration by measuring rock vibrations and movement, he said. Those sensors, which already have been developed, will cover a 6-square-mile area.
+That will be the largest smart dust deployment to date, he said.
+"We just think now, the technology has reached a point where it makes basic sense for us ... to get this out of the lab and into reality," Hartwell said.
+Smart dust (minus the 'dust')
+Despite the recent excitement, there's still much confusion in the computing industry about what exactly smart dust is.
+For starters, the sensors being deployed and developed today are much larger and clunkier than flecks of dust. HP's sensors -- accelerometers like those in the iPhone and Droid phone, but about 1,000 times more powerful -- are about the size of matchbooks. When they're enclosed in a metal box for protection, they're about the size of a VHS tape.
+So what makes a smart dust sensor different from a weather station or a traffic monitor?
+Size is one factor. Smart dust sensors must be relatively small and portable. But technology hasn't advanced far enough to manufacture the sensors on the scale of millimeters for commercial use (although Berkeley researchers are trying to make one that's a cubic millimeter).
+Wireless connections are a big distinguisher, too. A building's thermostat is most likely hard-wired. A smart dust sensor might gauge temperature, but it would be battery-powered and would communicate wirelessly with the internet and with other sensors.
+The sheer number of sensors in the network is what truly makes a smart dust project different from other efforts to record data about the world, said Deborah Estrin, a professor of computer science at the University of California, Los Angeles, who works in the field.
+Smart dust researchers tend to talk in the millions, billions and trillions.
+Some say reality has diverged so far from the smart dust concept that it's time to dump that term in favor or something less sexy. "Wireless sensor networks" or "meshes" are terms finding greater acceptance with some researchers.
+Estrin said it's important to ditch the idea that smart dust sensors would be disposable.
+Sensors have to be designed for specific purposes and spread out on the land intentionally -- not scattered in the wind, as smart dust was initially pitched, she said.
+'Real-world web'
+Despite these differences, researchers say the smart-dust theory that monitoring everything will benefit humanity remains essentially unchanged.
+And there are a number of real-world projects that, in one way or another, seek to use wireless sensors to take the Earth's vital signs.
+Wireless sensors currently monitor farms, factories, data centers and bridges to promote efficiency and understanding of how these systems work, researchers said in interviews.
+In all of these cases, the sensor networks are deployed for a specific purpose.
+For example, a company called Streetline has installed 12,000 sensors on parking spots and highways in San Francisco. The sensors don't know everything that's going on at those parking spots. They are equipped with magnetometers to sense whether or not a huge metal object -- hopefully a car -- is sitting on the spot.
+That data will soon be available to people who can use it to figure out where to park, said Tod Dykstra, Streetline's CEO.
+It also tells the cities if the meters have expired.
+Other sensors are equipped to measure vibration in factories and oil refineries to spot machine problems and inefficiencies before they cause trouble. Still others might pick up data about temperature, chemistry or sound. Tiny cameras or radars also can be tacked onto the data-collecting network to detect the presence of people or vehicles.
+The power of these networks is that they eventually can be connected, said David Culler, a computer science professor at UC Berkeley.
+Culler says the development of these wireless sensor networks is analogous to the creation of the World Wide Web. What's being created with the smart dust idea is a "Real World Web," he said.
+But he said we're still early on in that progression.
+"Netscape [for the wireless sensor network] hasn't quite happened," he said.
+Big Brother effect
+Even when deployed for science or the public, some people still get a Big Brother feeling -- the uncomfortable sense of being under constant, secret surveillance -- from the idea of putting trillions of monitors all over the world.
+"It's a very, very, very huge potential privacy invasion because we're talking about very, very small sensors that can be undetectable, effectively," said Lee Tien, an attorney at the Electronic Frontier Foundation, a privacy advocate.
+"They are there in such numbers that you really can't do anything about them in terms of easy countermeasures."
+That doesn't mean that researchers should stop working on smart dust. But they should be mindful of privacy as the work progresses, he said.
+Pister said the wireless frequencies that smart dust sensors use to communicate -- which work kind of like Wi-Fi -- have security built into them. So the data is public only if the person or company that installed the sensor wants it to be, he said.
+"Clearly, there are security concerns and privacy concerns," he said, "and the good news is that when the radio technology was being developed for this stuff, it was shortly after all of the big concerns about Wi-Fi security. ... We've got all the security tools we need underneath to make this information private."
+Further privacy concerns may arise if another vision for smart dust comes true. Some researchers are looking into making mobile phones into sensors.
+In this scenario, the billions of people roaming the Earth with cell phones become the "smart dust."
+Bright future
+Smart dust researchers say their theory of monitoring the world -- however it's realized -- will benefit people and the environment.
+More information is better information, Pister said.
+"Having more sensors improves the efficiency of a system and reduces the demand and reduces waste," he said. "So all of that is just straight goodness."
+Hartwell, the HP researcher, says the only way people can combat huge problems like climate change and biodiversity loss is to have more information about what's going on.
+"Frankly, I think we have to do it, from a sustainability and environmental standpoint," he said.
+Even though the first application of HP's "Central Nervous System for the Earth" project will be commercial, Hartwell says the motives behind smart dust are altruistic.
+"People ask me what my job is, and I say, well, I'm going to save the world," he said.
